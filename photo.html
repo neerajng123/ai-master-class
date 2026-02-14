@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGX Gallery | Photography</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --card-bg: #111111;
+            --primary-red: #e50914;
+            --text-main: #ffffff;
+            --text-dim: #b3b3b3;
+            --empty-gray: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        nav {
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .back-btn {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo {
+            font-weight: 900;
+            color: var(--primary-red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .gallery-container {
+            padding: 20px 5%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .img-item {
+            position: relative;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #1a1a1a;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* The "Empty" state styling */
+        .empty-slot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+        }
+
+        .empty-slot i {
+            font-size: 2.5rem;
+        }
+
+        .empty-slot span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .shield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: transparent;
+        }
+
+        .img-item:hover {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid #1a1a1a;
+            margin-top: 50px;
+        }
+
+        .creator {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+        }
+
+        .creator span { color: var(--primary-red); font-weight: 800; }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .gallery-container { padding: 10px; }
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;">
+
+    <nav>
+        <a href="index.html" class="back-btn"><i class="fas fa-chevron-left"></i> Portal</a>
+        <div class="logo">NGX<span>MEDIA</span></div>
+        <div style="width: 50px;"></div>
+    </nav>
+
+    <div class="gallery-container">
+        <div class="grid" id="photoGrid">
+            </div>
+    </div>
+
+    <footer>
+        <p class="creator">Created By <span>NGX</span></p>
+    </footer>
+
+    <script>
+        const grid = document.getElementById('photoGrid');
+        
+        // Define how many potential slots you want to check for (e.g., 20)
+        const checkLimit = 20; 
+
+        for (let i = 1; i <= checkLimit; i++) {
+            const fileName = `photo${i}.png`;
+            
+            // Create container
+            const item = document.createElement('div');
+            item.className = 'img-item';
+            
+            // Create Image object to check if it exists
+            const img = new Image();
+            img.src = fileName;
+
+            // If image loads successfully
+            img.onload = function() {
+                item.innerHTML = `
+                    <div class="shield"></div>
+                    <img src="${fileName}" alt="Gallery Item">
+                `;
+            };
+
+            // If image fails to load (No .png file)
+            img.onerror = function() {
+                item.innerHTML = `
+                    <div class="empty-slot">
+                        <i class="fas fa-image"></i>
+                        <span>No Image ${i}</span>
+                    </div>
+                `;
+            };
+
+            grid.appendChild(item);
+        }
+
+        // Global Protection
+        window.oncontextmenu = (e) => e.preventDefault();
+    </script>
+</body>
+</html>
