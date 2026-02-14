@@ -30,8 +30,9 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             line-height: 1.6;
-            user-select: none; /* Prevents text/video highlighting */
+            user-select: none; 
             -webkit-user-select: none;
+            overflow-x: hidden;
         }
 
         /* --- Layout --- */
@@ -79,10 +80,10 @@
         video {
             width: 100%;
             display: block;
-            pointer-events: none; /* User can't right click video file directly */
+            pointer-events: none; /* Prevents direct interaction with video file */
         }
 
-        /* Invisible layer to block long-press on mobile */
+        /* Invisible layer to block long-press/tap-and-hold on mobile */
         .touch-shield {
             position: absolute;
             top: 0;
@@ -90,6 +91,7 @@
             width: 100%;
             height: calc(100% - 60px);
             z-index: 5;
+            background: transparent;
         }
 
         /* --- Custom Controls --- */
@@ -151,7 +153,7 @@
             color: var(--text-dim);
         }
 
-        /* --- Info Section --- */
+        /* --- Info Section (Filling Gaps) --- */
         .info-section {
             margin-top: 30px;
             display: grid;
@@ -162,6 +164,7 @@
         .main-info h2 {
             font-size: 2rem;
             margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         .meta-tags {
@@ -172,18 +175,23 @@
 
         .tag {
             font-size: 0.75rem;
-            padding: 3px 10px;
+            padding: 4px 12px;
+            background: var(--glass);
             border: 1px solid #333;
             border-radius: 4px;
             color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .description {
             color: var(--text-dim);
             font-size: 0.95rem;
             background: var(--card-bg);
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
+            border-left: 3px solid var(--primary-red);
         }
 
         .stats-sidebar {
@@ -191,6 +199,7 @@
             padding: 20px;
             border-radius: 8px;
             height: fit-content;
+            border: 1px solid #222;
         }
 
         .stat-item {
@@ -199,12 +208,15 @@
             padding-bottom: 10px;
         }
 
+        .stat-item:last-child { border: none; }
+
         .stat-label {
             display: block;
             font-size: 0.7rem;
             color: var(--primary-red);
             text-transform: uppercase;
             font-weight: 700;
+            margin-bottom: 2px;
         }
 
         .stat-value {
@@ -215,7 +227,7 @@
         /* --- Footer --- */
         footer {
             text-align: center;
-            padding: 60px 0 30px;
+            padding: 60px 0 40px;
             border-top: 1px solid var(--glass);
             margin-top: 50px;
         }
@@ -223,12 +235,14 @@
         .creator {
             font-size: 0.9rem;
             color: var(--text-dim);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
         .creator span {
             color: var(--primary-red);
             font-weight: 800;
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
         }
 
         /* Mobile Optimization */
@@ -236,6 +250,8 @@
             .info-section { grid-template-columns: 1fr; }
             .main-info h2 { font-size: 1.5rem; }
             .stats-sidebar { order: -1; }
+            .control-row { padding-bottom: 5px; }
+            .time-display { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -245,13 +261,14 @@
     <div class="wrapper">
         <header>
             <div class="logo">NGX<span style="color:white">MEDIA</span></div>
-            <div class="badge-premium">Exclusive Access</div>
+            <div class="badge-premium"><i class="fas fa-crown"></i> Exclusive</div>
         </header>
 
         <main>
             <div class="video-container">
-                <video id="mainVideo" playsinline>
-                    <source src="video.mp4" type="video/mp4">
+                <video id="mainVideo" playsinline crossorigin="anonymous">
+                    <source src="https://uploadnow.io/s/ff41dcb7-19e2-4131-8a0c-0f51f3c53d27?o=t" type="video/mp4">
+                    Your browser does not support the video tag.
                 </video>
                 
                 <div class="touch-shield" id="shield"></div>
@@ -281,29 +298,29 @@
 
             <div class="info-section">
                 <div class="main-info">
-                    <h2>Cinematic Masterpiece</h2>
+                    <h2>Cinematic Stream Experience</h2>
                     <div class="meta-tags">
-                        <span class="tag"><i class="fas fa-bolt" style="color:gold"></i> 4K Ultra HD</span>
-                        <span class="tag">60 FPS</span>
-                        <span class="tag">HDR10</span>
+                        <span class="tag"><i class="fas fa-bolt" style="color:gold"></i> Ultra HD</span>
+                        <span class="tag"><i class="fas fa-signal"></i> Direct Stream</span>
+                        <span class="tag"><i class="fas fa-shield-alt"></i> Protected</span>
                     </div>
                     <div class="description">
-                        This visual experience was crafted using high-end production tools to deliver maximum immersion. The color grading is optimized for OLED displays, featuring deep blacks and vibrant crimson accents. Enjoy a seamless viewing experience with zero distractions.
+                        Experience high-fidelity visual storytelling directly through the NGX interface. This streaming module is optimized for low-latency playback while maintaining the highest possible bit-rate. The dark interface ensures that your focus remains entirely on the content.
                     </div>
                 </div>
 
                 <div class="stats-sidebar">
                     <div class="stat-item">
-                        <span class="stat-label">Production Status</span>
-                        <span class="stat-value">Released</span>
+                        <span class="stat-label">Stream Source</span>
+                        <span class="stat-value">UploadNow Cloud</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">File Integrity</span>
-                        <span class="stat-value">Encrypted</span>
+                        <span class="stat-label">Security Layer</span>
+                        <span class="stat-value">Active (NGX-Shield)</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Category</span>
-                        <span class="stat-value">Digital Art</span>
+                        <span class="stat-label">Viewing Quality</span>
+                        <span class="stat-value">Dynamic 4K</span>
                     </div>
                 </div>
             </div>
@@ -325,7 +342,7 @@
         const muteBtn = document.getElementById('muteBtn');
         const fsBtn = document.getElementById('fsBtn');
 
-        // Play/Pause
+        // Play/Pause Control
         function togglePlay() {
             if (video.paused) {
                 video.play();
@@ -339,10 +356,12 @@
         playBtn.addEventListener('click', togglePlay);
         shield.addEventListener('click', togglePlay);
 
-        // Progress Logic
+        // Update Progress & Time
         video.addEventListener('timeupdate', () => {
-            const progress = (video.currentTime / video.duration) * 100;
-            progFill.style.width = `${progress}%`;
+            if(video.duration) {
+                const progress = (video.currentTime / video.duration) * 100;
+                progFill.style.width = `${progress}%`;
+            }
             
             curTimeEl.innerText = formatTime(video.currentTime);
             if(!isNaN(video.duration)) durTimeEl.innerText = formatTime(video.duration);
@@ -354,12 +373,13 @@
             return `${m}:${s < 10 ? '0'+s : s}`;
         }
 
+        // Seeking
         progCont.addEventListener('click', (e) => {
             const newTime = (e.offsetX / progCont.offsetWidth) * video.duration;
             video.currentTime = newTime;
         });
 
-        // Controls
+        // Other Buttons
         document.getElementById('fastForward').onclick = () => video.currentTime += 10;
         document.getElementById('rewind').onclick = () => video.currentTime -= 10;
 
@@ -371,14 +391,23 @@
         fsBtn.onclick = () => {
             if (video.requestFullscreen) video.requestFullscreen();
             else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+            else if (video.msRequestFullscreen) video.msRequestFullscreen();
         };
 
-        // Extra layer of mobile protection: Disable long-press context menu
+        // Anti-Download Protections
+        // 1. Disable Right Click
         window.oncontextmenu = function(event) {
             event.preventDefault();
             event.stopPropagation();
             return false;
         };
+
+        // 2. Prevent keyboard shortcuts like Ctrl+S
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u')) {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
-</html>
+    </html>
