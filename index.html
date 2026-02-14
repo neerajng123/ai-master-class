@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGX Premium | Video Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --card-bg: #111111;
+            --primary-red: #e50914;
+            --accent-red: #ff3c47;
+            --text-main: #ffffff;
+            --text-dim: #b3b3b3;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            user-select: none; /* Prevents text/video highlighting */
+            -webkit-user-select: none;
+        }
+
+        /* --- Layout --- */
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary-red);
+            letter-spacing: -1px;
+        }
+
+        .badge-premium {
+            background: var(--primary-red);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* --- Video Section --- */
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border: 1px solid #222;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+            pointer-events: none; /* User can't right click video file directly */
+        }
+
+        /* Invisible layer to block long-press on mobile */
+        .touch-shield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 60px);
+            z-index: 5;
+        }
+
+        /* --- Custom Controls --- */
+        .controls {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            padding: 15px;
+            z-index: 10;
+        }
+
+        .progress-bar-container {
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            margin-bottom: 15px;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .progress-filled {
+            height: 100%;
+            background: var(--primary-red);
+            width: 0%;
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--primary-red);
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ctrl-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .ctrl-btn:hover {
+            color: var(--primary-red);
+            transform: scale(1.1);
+        }
+
+        .time-display {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--text-dim);
+        }
+
+        /* --- Info Section --- */
+        .info-section {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .main-info h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .meta-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: var(--text-dim);
+        }
+
+        .description {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .stats-sidebar {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            height: fit-content;
+        }
+
+        .stat-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--primary-red);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--glass);
+            margin-top: 50px;
+        }
+
+        .creator {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+
+        .creator span {
+            color: var(--primary-red);
+            font-weight: 800;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .info-section { grid-template-columns: 1fr; }
+            .main-info h2 { font-size: 1.5rem; }
+            .stats-sidebar { order: -1; }
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;">
+
+    <div class="wrapper">
+        <header>
+            <div class="logo">NGX<span style="color:white">MEDIA</span></div>
+            <div class="badge-premium">Exclusive Access</div>
+        </header>
+
+        <main>
+            <div class="video-container">
+                <video id="mainVideo" playsinline>
+                    <source src="video.mp4" type="video/mp4">
+                </video>
+                
+                <div class="touch-shield" id="shield"></div>
+
+                <div class="controls">
+                    <div class="progress-bar-container" id="progCont">
+                        <div class="progress-filled" id="progFill"></div>
+                    </div>
+
+                    <div class="control-row">
+                        <div class="btn-group">
+                            <button class="ctrl-btn" id="playPause"><i class="fas fa-play"></i></button>
+                            <button class="ctrl-btn" id="rewind"><i class="fas fa-undo"></i></button>
+                            <button class="ctrl-btn" id="fastForward"><i class="fas fa-redo"></i></button>
+                            <div class="time-display">
+                                <span id="curTime">0:00</span> / <span id="durTime">0:00</span>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="ctrl-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
+                            <button class="ctrl-btn" id="fsBtn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="main-info">
+                    <h2>Cinematic Masterpiece</h2>
+                    <div class="meta-tags">
+                        <span class="tag"><i class="fas fa-bolt" style="color:gold"></i> 4K Ultra HD</span>
+                        <span class="tag">60 FPS</span>
+                        <span class="tag">HDR10</span>
+                    </div>
+                    <div class="description">
+                        This visual experience was crafted using high-end production tools to deliver maximum immersion. The color grading is optimized for OLED displays, featuring deep blacks and vibrant crimson accents. Enjoy a seamless viewing experience with zero distractions.
+                    </div>
+                </div>
+
+                <div class="stats-sidebar">
+                    <div class="stat-item">
+                        <span class="stat-label">Production Status</span>
+                        <span class="stat-value">Released</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">File Integrity</span>
+                        <span class="stat-value">Encrypted</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Category</span>
+                        <span class="stat-value">Digital Art</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p class="creator">Created By <span>NGX</span></p>
+        </footer>
+    </div>
+
+    <script>
+        const video = document.getElementById('mainVideo');
+        const playBtn = document.getElementById('playPause');
+        const shield = document.getElementById('shield');
+        const progFill = document.getElementById('progFill');
+        const progCont = document.getElementById('progCont');
+        const curTimeEl = document.getElementById('curTime');
+        const durTimeEl = document.getElementById('durTime');
+        const muteBtn = document.getElementById('muteBtn');
+        const fsBtn = document.getElementById('fsBtn');
+
+        // Play/Pause
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                video.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        playBtn.addEventListener('click', togglePlay);
+        shield.addEventListener('click', togglePlay);
+
+        // Progress Logic
+        video.addEventListener('timeupdate', () => {
+            const progress = (video.currentTime / video.duration) * 100;
+            progFill.style.width = `${progress}%`;
+            
+            curTimeEl.innerText = formatTime(video.currentTime);
+            if(!isNaN(video.duration)) durTimeEl.innerText = formatTime(video.duration);
+        });
+
+        function formatTime(time) {
+            let m = Math.floor(time / 60);
+            let s = Math.floor(time % 60);
+            return `${m}:${s < 10 ? '0'+s : s}`;
+        }
+
+        progCont.addEventListener('click', (e) => {
+            const newTime = (e.offsetX / progCont.offsetWidth) * video.duration;
+            video.currentTime = newTime;
+        });
+
+        // Controls
+        document.getElementById('fastForward').onclick = () => video.currentTime += 10;
+        document.getElementById('rewind').onclick = () => video.currentTime -= 10;
+
+        muteBtn.onclick = () => {
+            video.muted = !video.muted;
+            muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+        };
+
+        fsBtn.onclick = () => {
+            if (video.requestFullscreen) video.requestFullscreen();
+            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+        };
+
+        // Extra layer of mobile protection: Disable long-press context menu
+        window.oncontextmenu = function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        };
+    </script>
+</body>
+</html>
