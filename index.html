@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NGX Premium | Video Showcase</title>
+    <title>NGX MEDIA | Official Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg-dark: #050505;
             --card-bg: #111111;
             --primary-red: #e50914;
-            --accent-red: #ff3c47;
+            --hover-red: #ff1f29;
             --text-main: #ffffff;
             --text-dim: #b3b3b3;
-            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * {
@@ -23,390 +22,211 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            line-height: 1.6;
-            user-select: none; 
-            -webkit-user-select: none;
-            overflow-x: hidden;
-        }
-
-        /* --- Layout --- */
-        .wrapper {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            padding: 20px 0;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--glass);
-            margin-bottom: 30px;
+            flex-direction: column;
+            overflow: hidden; /* Clean portal look */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* --- Header --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
 
         .logo {
-            font-weight: 800;
-            font-size: 1.5rem;
+            font-weight: 900;
+            font-size: 1.8rem;
             color: var(--primary-red);
             letter-spacing: -1px;
-        }
-
-        .badge-premium {
-            background: var(--primary-red);
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.7rem;
             text-transform: uppercase;
-            font-weight: 700;
         }
 
-        /* --- Video Section --- */
-        .video-container {
-            position: relative;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            border: 1px solid #222;
-        }
+        .logo span { color: white; }
 
-        video {
-            width: 100%;
-            display: block;
-            pointer-events: none; /* Prevents direct interaction with video file */
-        }
-
-        /* Invisible layer to block long-press/tap-and-hold on mobile */
-        .touch-shield {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 60px);
-            z-index: 5;
-            background: transparent;
-        }
-
-        /* --- Custom Controls --- */
-        .controls {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: linear-gradient(transparent, rgba(0,0,0,0.95));
-            padding: 15px;
-            z-index: 10;
-        }
-
-        .progress-bar-container {
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            cursor: pointer;
-            margin-bottom: 15px;
-            border-radius: 2px;
-            position: relative;
-        }
-
-        .progress-filled {
+        /* --- Main Portal Grid --- */
+        .portal-container {
+            flex: 1;
+            display: flex;
             height: 100%;
-            background: var(--primary-red);
-            width: 0%;
-            border-radius: 2px;
-            box-shadow: 0 0 10px var(--primary-red);
+            width: 100%;
         }
 
-        .control-row {
+        .portal-section {
+            flex: 1;
+            position: relative;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-        }
-
-        .btn-group {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .ctrl-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.2rem;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-decoration: none;
         }
 
-        .ctrl-btn:hover {
+        /* Background image effect */
+        .portal-section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            transition: 0.6s;
+            z-index: 1;
+        }
+
+        /* Specific backgrounds (you can replace these links with your own images) */
+        .photo-side::before { background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80'); }
+        .video-side::before { background-image: url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&q=80'); }
+
+        .content {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .portal-section i {
+            font-size: 4rem;
             color: var(--primary-red);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+            transition: 0.4s;
+        }
+
+        .portal-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .portal-section p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: 0.4s;
+        }
+
+        /* --- Hover States --- */
+        .portal-section:hover {
+            flex: 1.4;
+            background-color: rgba(229, 9, 20, 0.05);
+        }
+
+        .portal-section:hover::before {
+            opacity: 0.6;
             transform: scale(1.1);
         }
 
-        .time-display {
-            font-size: 0.85rem;
-            font-weight: 300;
-            color: var(--text-dim);
+        .portal-section:hover i {
+            transform: scale(1.2);
+            color: white;
         }
 
-        /* --- Info Section (Filling Gaps) --- */
-        .info-section {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
+        .portal-section:hover p {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .main-info h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .meta-tags {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tag {
-            font-size: 0.75rem;
-            padding: 4px 12px;
-            background: var(--glass);
-            border: 1px solid #333;
-            border-radius: 4px;
-            color: var(--text-dim);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .description {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 8px;
-            border-left: 3px solid var(--primary-red);
-        }
-
-        .stats-sidebar {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            height: fit-content;
-            border: 1px solid #222;
-        }
-
-        .stat-item {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #222;
-            padding-bottom: 10px;
-        }
-
-        .stat-item:last-child { border: none; }
-
-        .stat-label {
-            display: block;
-            font-size: 0.7rem;
+        .portal-section:hover h2 {
             color: var(--primary-red);
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        .stat-value {
-            font-size: 1.1rem;
-            font-weight: 600;
         }
 
         /* --- Footer --- */
         footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 20px;
             text-align: center;
-            padding: 60px 0 40px;
-            border-top: 1px solid var(--glass);
-            margin-top: 50px;
+            z-index: 100;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
         }
 
         .creator {
-            font-size: 0.9rem;
-            color: var(--text-dim);
+            font-size: 0.8rem;
             letter-spacing: 3px;
-            text-transform: uppercase;
+            color: var(--text-dim);
         }
 
         .creator span {
             color: var(--primary-red);
             font-weight: 800;
-            text-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
         }
 
-        /* Mobile Optimization */
+        /* --- Mobile Responsive --- */
         @media (max-width: 768px) {
-            .info-section { grid-template-columns: 1fr; }
-            .main-info h2 { font-size: 1.5rem; }
-            .stats-sidebar { order: -1; }
-            .control-row { padding-bottom: 5px; }
-            .time-display { font-size: 0.75rem; }
+            .portal-container {
+                flex-direction: column;
+            }
+            .portal-section h2 { font-size: 1.8rem; }
+            .portal-section i { font-size: 3rem; }
+            .portal-section p { opacity: 1; transform: none; }
+            body { overflow-y: auto; }
         }
     </style>
 </head>
-
 <body oncontextmenu="return false;">
 
-    <div class="wrapper">
-        <header>
-            <div class="logo">NGX<span style="color:white">MEDIA</span></div>
-            <div class="badge-premium"><i class="fas fa-crown"></i> Exclusive</div>
-        </header>
+    <header>
+        <div class="logo">NGX<span>MEDIA</span></div>
+    </header>
 
-        <main>
-            <div class="video-container">
-                <video id="mainVideo" playsinline crossorigin="anonymous">
-                    <source src="https://pin.it/431EfxvHx" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                
-                <div class="touch-shield" id="shield"></div>
-
-                <div class="controls">
-                    <div class="progress-bar-container" id="progCont">
-                        <div class="progress-filled" id="progFill"></div>
-                    </div>
-
-                    <div class="control-row">
-                        <div class="btn-group">
-                            <button class="ctrl-btn" id="playPause"><i class="fas fa-play"></i></button>
-                            <button class="ctrl-btn" id="rewind"><i class="fas fa-undo"></i></button>
-                            <button class="ctrl-btn" id="fastForward"><i class="fas fa-redo"></i></button>
-                            <div class="time-display">
-                                <span id="curTime">0:00</span> / <span id="durTime">0:00</span>
-                            </div>
-                        </div>
-
-                        <div class="btn-group">
-                            <button class="ctrl-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
-                            <button class="ctrl-btn" id="fsBtn"><i class="fas fa-expand"></i></button>
-                        </div>
-                    </div>
-                </div>
+    <main class="portal-container">
+        <a href="photo.html" class="portal-section photo-side">
+            <div class="content">
+                <i class="fas fa-camera-retro"></i>
+                <h2>Photography</h2>
+                <p>Explore high-resolution visual stories</p>
             </div>
+        </a>
 
-            <div class="info-section">
-                <div class="main-info">
-                    <h2>Cinematic Stream Experience</h2>
-                    <div class="meta-tags">
-                        <span class="tag"><i class="fas fa-bolt" style="color:gold"></i> Ultra HD</span>
-                        <span class="tag"><i class="fas fa-signal"></i> Direct Stream</span>
-                        <span class="tag"><i class="fas fa-shield-alt"></i> Protected</span>
-                    </div>
-                    <div class="description">
-                        Experience high-fidelity visual storytelling directly through the NGX interface. This streaming module is optimized for low-latency playback while maintaining the highest possible bit-rate. The dark interface ensures that your focus remains entirely on the content.
-                    </div>
-                </div>
-
-                <div class="stats-sidebar">
-                    <div class="stat-item">
-                        <span class="stat-label">Stream Source</span>
-                        <span class="stat-value">UploadNow Cloud</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Security Layer</span>
-                        <span class="stat-value">Active (NGX-Shield)</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Viewing Quality</span>
-                        <span class="stat-value">Dynamic 4K HD</span>
-                    </div>
-                </div>
+        <a href="video.html" class="portal-section video-side">
+            <div class="content">
+                <i class="fas fa-play-circle"></i>
+                <h2>Cinematics</h2>
+                <p>Experience the latest 4K motion works</p>
             </div>
-        </main>
+        </a>
+    </main>
 
-        <footer>
-            <p class="creator">Created By <span>NGX</span></p>
-        </footer>
-    </div>
+    <footer>
+        <p class="creator">Created By <span>NGX</span></p>
+    </footer>
 
     <script>
-        const video = document.getElementById('mainVideo');
-        const playBtn = document.getElementById('playPause');
-        const shield = document.getElementById('shield');
-        const progFill = document.getElementById('progFill');
-        const progCont = document.getElementById('progCont');
-        const curTimeEl = document.getElementById('curTime');
-        const durTimeEl = document.getElementById('durTime');
-        const muteBtn = document.getElementById('muteBtn');
-        const fsBtn = document.getElementById('fsBtn');
-
-        // Play/Pause Control
-        function togglePlay() {
-            if (video.paused) {
-                video.play();
-                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            } else {
-                video.pause();
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-            }
-        }
-
-        playBtn.addEventListener('click', togglePlay);
-        shield.addEventListener('click', togglePlay);
-
-        // Update Progress & Time
-        video.addEventListener('timeupdate', () => {
-            if(video.duration) {
-                const progress = (video.currentTime / video.duration) * 100;
-                progFill.style.width = `${progress}%`;
-            }
-            
-            curTimeEl.innerText = formatTime(video.currentTime);
-            if(!isNaN(video.duration)) durTimeEl.innerText = formatTime(video.duration);
-        });
-
-        function formatTime(time) {
-            let m = Math.floor(time / 60);
-            let s = Math.floor(time % 60);
-            return `${m}:${s < 10 ? '0'+s : s}`;
-        }
-
-        // Seeking
-        progCont.addEventListener('click', (e) => {
-            const newTime = (e.offsetX / progCont.offsetWidth) * video.duration;
-            video.currentTime = newTime;
-        });
-
-        // Other Buttons
-        document.getElementById('fastForward').onclick = () => video.currentTime += 10;
-        document.getElementById('rewind').onclick = () => video.currentTime -= 10;
-
-        muteBtn.onclick = () => {
-            video.muted = !video.muted;
-            muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
-        };
-
-        fsBtn.onclick = () => {
-            if (video.requestFullscreen) video.requestFullscreen();
-            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-            else if (video.msRequestFullscreen) video.msRequestFullscreen();
-        };
-
-        // Anti-Download Protections
-        // 1. Disable Right Click
+        // Prevent long-press to save on mobile across the homepage
         window.oncontextmenu = function(event) {
             event.preventDefault();
             event.stopPropagation();
             return false;
         };
 
-        // 2. Prevent keyboard shortcuts like Ctrl+S
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'u')) {
-                e.preventDefault();
-            }
+        // Smooth transition effect when clicking
+        const links = document.querySelectorAll('.portal-section');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.body.style.opacity = '0';
+                document.body.style.transition = '0.5s';
+            });
         });
     </script>
 </body>
